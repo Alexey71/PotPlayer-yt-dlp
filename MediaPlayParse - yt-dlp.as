@@ -1,6 +1,6 @@
-﻿/*
+/*
 	yt-dlp media parse
-*/	
+*/
 
 // string GetTitle() 									-> get title for UI
 // string GetVersion									-> get version for manage
@@ -65,7 +65,7 @@ bool PlayitemCheck(const string &in path)
 string PlayitemParse(const string &in path, dictionary &MetaData, array<dictionary> &QualityList)
 {
 	string useragent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)";
-	string json = HostExecuteProgram("Extension\\Media\\PlayParse\\yt-dlp.exe", " --user-agent \"" + useragent + "\" --no-check-certificates --cookies-from-browser firefox --no-playlist --all-subs -J -- \"" + path + "\"");
+	string json = HostExecuteProgram("Extension\\Media\\PlayParse\\yt-dlp.exe", " --user-agent \"" + useragent + "\" --no-check-certificates --no-cache-dir --cookies-from-browser firefox --no-playlist --all-subs -J -- \"" + path + "\"");
 	string ret;
 	
 	if (!json.empty())
