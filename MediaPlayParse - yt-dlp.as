@@ -2,21 +2,6 @@
 	yt-dlp media parse
 */
 
-// string GetTitle() 									-> get title for UI
-// string GetVersion									-> get version for manage
-// string GetDesc()										-> get detail information
-// string GetLoginTitle()								-> get title for login dialog
-// string GetLoginDesc()								-> get desc for login dialog
-// string GetUserText()									-> get user text for login dialog
-// string GetPasswordText()								-> get password text for login dialog
-// string ServerCheck(string User, string Pass) 		-> server check
-// string ServerLogin(string User, string Pass) 		-> login
-// void ServerLogout() 									-> logout
-// bool PlayitemCheck(const string &in)					-> check playitem
-// array<dictionary> PlayitemParse(const string &in)	-> parse playitem
-// bool PlaylistCheck(const string &in)					-> check playlist
-// array<dictionary> PlaylistParse(const string &in)	-> parse playlist
-
 string GetTitle()
 {
 	return "yt-dlp";
@@ -73,14 +58,13 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 		JsonReader reader;
 		JsonValue root;
 
-//HostPrintUTF8(json);
 		if (reader.parse(json, root) && root.isObject())
 		{
 			JsonValue formats = root["formats"];
-			
+
 			if (formats.isArray())
 			{
-				JsonValue url = root["url"];				
+				JsonValue url = root["url"];
 				if (url.isString()) ret = url.asString();
 
 				JsonValue title = root["title"];
@@ -88,10 +72,10 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 
 				JsonValue id = root["id"];
 				if (id.isString()) MetaData["vid"] = id.asString();
-				
+
 				JsonValue ext = root["ext"];
 				if (ext.isString()) MetaData["fileExt"] = ext.asString();
-				
+
 				JsonValue uploader = root["uploader"];
 				if (uploader.isString()) MetaData["author"] = uploader.asString();
 				else
@@ -104,7 +88,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 						if (extractor_key.isString()) MetaData["author"] = extractor_key.asString();
 					}
 				}
-				
+
 				JsonValue description = root["description"];
 				if (description.isString()) MetaData["content"] = description.asString();
 
@@ -124,7 +108,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 				for(int j = 0, len = formats.size(); j < len; j++)
 				{
 					JsonValue format = formats[j];
-				
+
 					JsonValue protocol = format["protocol"];
 					if (!protocol.isString()) continue;
 					string _protocol = protocol.asString();
@@ -133,7 +117,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 					JsonValue url = format["url"];
 					if (!url.isString()) continue;
 					if (ret.empty()) ret = url.asString();
-					
+
 					if (@QualityList !is null)
 					{
 						JsonValue ext = format["ext"];
@@ -175,24 +159,24 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 						JsonValue tbr = format["tbr"];
 						if (tbr.isDouble()) _tbr = tbr.asDouble();
 						else if (tbr.isUInt()) _tbr = tbr.asUInt();
-						
+
 						dictionary item;
 						item["url"] = url.asString();
 						item["format"] = _ext;
 						if (_width > 0 && _height > 0) item["resolution"] = formatInt(_width) + "×" + formatInt(_height);
-						
+
 						string bitrate;
 						if (_tbr > 0) bitrate = HostFormatBitrate(_tbr * 1000);
 						else if (_vbr > 0 && _abr > 0) bitrate = HostFormatBitrate((_abr + _vbr) * 1000);
 						else if (_vbr > 0) bitrate = HostFormatBitrate(_vbr * 1000);
 						else if (_abr > 0) bitrate = HostFormatBitrate(_abr * 1000);
-						
+
 						int itag = 0;
 						JsonValue format_id = format["format_id"];
 						if (format_id.isUInt()) itag = format_id.asUInt();
-						
+
 						string quality;
-						if (_vcodec == "none") // audio only..
+						if (_vcodec == "none") // audio only...
 						{
 							double bps = _tbr > 0 ? _tbr : _abr;
 
@@ -209,7 +193,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 							if (_acodec == "none") // video only...
 							{
 								if (itag <= 0 || HostExistITag(itag))
-								{							
+								{
 									itag = HostGetITag(_height, 0, _ext == "mp4", _ext == "webm" || _ext == "m3u8");
 									if (itag < 0) itag = HostGetITag(_height, 0, true, true);
 								}
@@ -218,7 +202,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 							else
 							{
 								if (itag <= 0 || HostExistITag(itag))
-								{							
+								{
 									if (_height > 0 && _abr < 1) _abr = 1;
 									itag = HostGetITag(_height, _abr, _ext == "mp4", _ext == "webm" || _ext == "m3u8");
 									if (itag < 0) itag = HostGetITag(_height, _abr, true, true);
@@ -232,7 +216,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 							}
 							JsonValue fmt = format["format"];
 							if (fmt.isString())
-							{							
+							{
 								string str = fmt.asString();
 								if (quality.empty())
 								{
@@ -240,7 +224,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 									int p = quality.find(" ");
 									if (p > 0) quality = quality.substr(0, p);
 								}
-								
+
 								int p = str.find("HDR");
 								if (p > 0) item["isHDR"] = true;
 							}
@@ -253,7 +237,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 						if (_fps > 0) item["fps"] = _fps;
 
 						while (HostExistITag(itag)) itag++;
-						HostSetITag(itag);					
+						HostSetITag(itag);
 						item["itag"] = itag;
 
 						QualityList.insertLast(item);
@@ -261,21 +245,21 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 				}
 
 				if (@QualityList !is null)
-				{				
+				{
 					JsonValue requested_subtitles = root["requested_subtitles"];
 					if (requested_subtitles.isObject())
 					{
-						array<dictionary> subtitle;					
+						array<dictionary> subtitle;
 						array<string> lang_names = requested_subtitles.getKeys();
-						
+
 						for(int j = 0, len = lang_names.size(); j < len; j++)
 						{
 							JsonValue sub = requested_subtitles[lang_names[j]];
-						
+
 							if (sub.isObject())
 							{
 								JsonValue url = sub["url"];
-							
+
 								if (url.isString())
 								{
 									dictionary item;
@@ -283,7 +267,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 									item["name"] = lang_names[j];
 									item["langCode"] = lang_names[j];
 									item["url"] = url.asString();
-									subtitle.insertLast(item);								
+									subtitle.insertLast(item);
 								}
 							}
 						}
@@ -293,6 +277,6 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 			}
 		}
 	}
-	
+
 	return ret;
 }
