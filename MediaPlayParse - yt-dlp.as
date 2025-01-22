@@ -26,27 +26,15 @@ bool PlayitemCheck(const string &in path)
 	if (path.find("://m.youtube.com/") >= 0) return true;
 	if (path.find("://rutube.ru/") >= 0) return true;
 	if (path.find("://smotrim.ru/") >= 0) return true;
-	if (path.find("://ok.ru/") >= 0) return true;
 	if (path.find("://vk.com/") >= 0) return true;
 	if (path.find("://live.vkplay.ru/") >= 0) return true;
 	if (path.find("://vkvideo.ru/") >= 0) return true;
 	if (path.find("://live.vkvideo.ru/") >= 0) return true;
 	if (path.find("://vkplay.live/") >= 0) return true;
 	if (path.find("://live.vkplay.ru/") >= 0) return true;
-	if (path.find("://dzen.ru/") >= 0) return true;
-	if (path.find("://www.ntv.ru/") >= 0) return true;
-	if (path.find("://goodgame.ru/") >= 0) return true;
 	if (path.find("://www.twitch.tv/") >= 0) return true;
 	if (path.find("://clips.twitch.tv/") >= 0) return true;
 	if (path.find("://kick.com/") >= 0) return true;
-	if (path.find("://www.tiktok.com/") >= 0) return true;
-	if (path.find("://vimeo.com/") >= 0) return true;
-	if (path.find("://yewtu.be/") >= 0) return true;
-	if (path.find("://piped.video/") >= 0) return true;
-	if (path.find("://www.xnxx.com/") >= 0) return true;
-	if (path.find("://www.xvideos.com/") >= 0) return true;
-	if (path.find("://rt.pornhub.com/") >= 0) return true;
-	if (path.find("://www.pornhub.com/") >= 0) return true;
 	return false;
 }
 
