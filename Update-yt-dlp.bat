@@ -1,8 +1,8 @@
 @echo off
-title Обновление yt-dlp
+title Updating yt-dlp
 echo.
 echo ***************************************
-echo       Проверка и обновление yt-dlp
+echo     Downloading and updating yt-dlp
 echo ***************************************
 echo.
 "yt-dlp" --update-to master
