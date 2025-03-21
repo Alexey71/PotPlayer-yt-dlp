@@ -1,6 +1,10 @@
 /*
 	yt-dlp media parse
 */
+/*
+	Source code
+https://github.com/Alexey71/PotPlayer-yt-dlp
+*/
 
 string GetTitle()
 {
