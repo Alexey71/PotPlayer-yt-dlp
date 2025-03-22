@@ -65,6 +65,9 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 				JsonValue title = root["title"];
 				if (title.isString()) MetaData["title"] = title.asString();
 
+				JsonValue duration = root["duration"];
+				if (duration.isUInt()) MetaData["duration"] = duration.asUInt() * 1000; 
+
 				JsonValue id = root["id"];
 				if (id.isString()) MetaData["vid"] = id.asString();
 
