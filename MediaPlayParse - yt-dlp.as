@@ -44,8 +44,7 @@ bool PlayitemCheck(const string &in path)
 
 string PlayitemParse(const string &in path, dictionary &MetaData, array<dictionary> &QualityList)
 {
-	string useragent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)";
-	string json = HostExecuteProgram("Extension\\Media\\PlayParse\\yt-dlp.exe", " --user-agent \"" + useragent + "\" --no-check-certificates --no-cache-dir --cookies-from-browser firefox --no-playlist --all-subs -J -- \"" + path + "\"");
+	string json = HostExecuteProgram("Extension/Media/PlayParse/yt-dlp.exe", " --no-check-certificates --no-cache-dir --cookies-from-browser firefox --no-playlist --all-subs -J -- \"" + path + "\"");
 	string ret;
 	
 	if (!json.empty())
@@ -100,6 +99,10 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 				if (view_count.isString()) MetaData["viewCount"] = view_count.asString();
 				else if (view_count.isUInt()) MetaData["viewCount"] = formatInt(view_count.asUInt());
 
+				JsonValue like_count = root["like_count"];
+				if (like_count.isString()) MetaData["likeCount"] = like_count.asString();
+				else if (like_count.isUInt()) MetaData["likeCount"] = formatInt(like_count.asUInt());
+
 				JsonValue upload_date = root["upload_date"];
 				if (upload_date.isString()) MetaData["date"] = upload_date.asString();
 
@@ -110,7 +113,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 					JsonValue protocol = format["protocol"];
 					if (!protocol.isString()) continue;
 					string _protocol = protocol.asString();
-					if (_protocol != "http" && _protocol != "https" && _protocol.substr(0, 4) != "m3u8") continue;
+					if (_protocol != "http_dash_segments" && _protocol != "http" && _protocol != "https" && _protocol.substr(0, 4) != "m3u8") continue;
 
 					JsonValue url = format["url"];
 					if (!url.isString()) continue;
