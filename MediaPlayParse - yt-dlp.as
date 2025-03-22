@@ -29,7 +29,6 @@ bool PlayitemCheck(const string &in path)
 	if (path.find("://youtube.com/") >= 0) return true;
 	if (path.find("://m.youtube.com/") >= 0) return true;
 	if (path.find("://rutube.ru/") >= 0) return true;
-	if (path.find("://smotrim.ru/") >= 0) return true;
 	if (path.find("://vk.com/") >= 0) return true;
 	if (path.find("://live.vkplay.ru/") >= 0) return true;
 	if (path.find("://vkvideo.ru/") >= 0) return true;
