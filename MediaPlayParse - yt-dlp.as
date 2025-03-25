@@ -64,7 +64,7 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 				if (title.isString()) MetaData["title"] = title.asString();
 
 				JsonValue duration = root["duration"];
-				if (duration.isUInt()) MetaData["duration"] = duration.asUInt() * 1000; 
+				if (duration.isUInt()) MetaData["duration"] = duration.asUInt() * 1000;
 
 				JsonValue id = root["id"];
 				if (id.isString()) MetaData["vid"] = id.asString();
@@ -274,6 +274,21 @@ string PlayitemParse(const string &in path, dictionary &MetaData, array<dictiona
 						if (subtitle.size() > 0) MetaData["subtitle"] = subtitle;
 					}
 				}
+
+				if ((@QualityList !is null) && root["chapters"].isArray())
+				{
+					array<dictionary> chapt;
+					JsonValue chapters = root["chapters"];
+					dictionary item;
+
+						for(int j = 0; j < chapters.size(); j++)
+						if (chapters[j]["title"].isString() && chapters[j]["start_time"].isUInt()) {
+						item["title"] = chapters[j]["title"].asString();
+						item["time"] = formatUInt(chapters[j]["start_time"].asUInt() * 1000);
+						chapt.insertLast(item);
+					}
+					if (!chapt.empty()) MetaData["chapter"] = chapt;
+				} 
 			}
 		}
 	}
