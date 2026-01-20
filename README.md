@@ -1,3 +1,6 @@
+Use the better option for the ytdlp extension https://github.com/hgcat-360/PotPlayer-Extension_yt-dlp
+
+
 ## Installation
  Download the full plugin archive here https://github.com/Alexey71/PotPlayer-yt-dlp/releases
  
